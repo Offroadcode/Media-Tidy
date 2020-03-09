@@ -1,0 +1,7 @@
+MediaTidy/Orc.MediaTidy/App_Data/NuGetBackup/
+MediaTidy/Orc.MediaTidy/packages/
+MediaTidy/Orc.MediaTidy/.vs/
+MediaTidy/Orc.MediaTidy/obj/Debug/
+MediaTidy/Orc.MediaTidy/bin/Debug/
+node_modules/
+.sass-cache/
