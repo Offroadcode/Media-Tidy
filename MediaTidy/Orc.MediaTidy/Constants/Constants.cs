@@ -11,9 +11,26 @@ namespace Orc.MediaTidy.Constants
         public const string ArchiveFolder = "archiveFolder";
     }
 
+    public class KnownDataTypeIds
+    {
+        public const int ListViewMedia = -96;
+    }
+
+    public class ArchiveMediaType
+    {
+        public const string Alias = KnownMediaTypeAliases.ArchiveFolder;
+        public const string Name = "Archive Folder";
+        public const string Icon = "icon-folder-closed color-blue-grey";
+        public const string Description = "A folder to hold archived media for the purposes of testing with Nexu";
+        public const bool IsContainer = false;
+        public const bool AllowedAtRoot = true;
+    }
+
     public class KnownMediaTypeIds
     {
         public const int Folder = 1031;
+        public const int Image = 1032;
+        public const int File = 1033;
     }
 
     internal class SqlQueries

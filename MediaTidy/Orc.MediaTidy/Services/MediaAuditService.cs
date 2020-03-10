@@ -15,14 +15,17 @@ namespace Orc.MediaTidy.Services
     {
         private readonly DatabaseContext _dbContext;
         private readonly IMediaService _mediaService;
+        private readonly MediaTypeService _mediaTypeService;
 
         public MediaAuditService()
         {
             var dbContext = ApplicationContext.Current.DatabaseContext;
             var mediaService = ApplicationContext.Current.Services.MediaService;
+            var contentTypeService = new MediaTypeService();
 
             _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
             _mediaService = mediaService ?? throw new ArgumentNullException(nameof(mediaService));
+            _mediaTypeService = contentTypeService ?? throw new ArgumentNullException(nameof(contentTypeService));
         }
 
         internal IList<MediaAuditItem> GetUnusedMediaData(IEnumerable<int> ids)
@@ -69,9 +72,6 @@ namespace Orc.MediaTidy.Services
         {
             var success = false;
 
-            //var hub = new NotificationsHub();
-            //hub.SendMessage("Fetching media to archive");
-
             try
             {
                 var root = CheckArchiveFolderStructure();
@@ -108,8 +108,6 @@ namespace Orc.MediaTidy.Services
 
             success = CleanEmptyFolders();
 
-            //hub.SendMessage("Media archiving complete");
-
             return success;
         }
 
@@ -144,6 +142,7 @@ namespace Orc.MediaTidy.Services
             // create root if needed
             if (root == null)
             {
+                // Check to make sure the Archive Folder exists
                 root = _mediaService.CreateMedia("Archive", -1, KnownMediaTypeAliases.ArchiveFolder);
                 _mediaService.Save(root);
             }

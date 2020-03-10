@@ -6,7 +6,7 @@ using Umbraco.Web.WebApi;
 
 namespace Orc.MediaTidy.Controllers
 {
-    public class MediaTidyController : UmbracoAuthorizedApiController
+    public class MediaTidyController : UmbracoApiController
     {
         private readonly MediaAuditService _mediaAuditService = new MediaAuditService();
 
