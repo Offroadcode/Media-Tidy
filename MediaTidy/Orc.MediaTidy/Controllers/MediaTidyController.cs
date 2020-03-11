@@ -10,9 +10,11 @@ namespace Orc.MediaTidy.Controllers
     {
         private readonly AuditService _auditService = new AuditService();
         private readonly ArchiveService _archiveService = new ArchiveService();
+        private readonly ReportService _reportService = new ReportService();
 
         public IHttpActionResult GenerateMediaReport()
         {
+            _reportService.GenerateMediaReport();
             return Ok();
         }
 
