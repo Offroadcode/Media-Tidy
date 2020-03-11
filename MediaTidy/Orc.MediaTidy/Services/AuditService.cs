@@ -12,13 +12,13 @@ using SystemFile = System.IO.File;
 
 namespace Orc.MediaTidy.Services
 {
-    public class MediaAuditService
+    public class AuditService
     {
         private readonly DatabaseContext _dbContext;
         private readonly IMediaService _mediaService;
         private readonly MediaTypeService _mediaTypeService;
 
-        public MediaAuditService()
+        public AuditService()
         {
             var dbContext = ApplicationContext.Current.DatabaseContext;
             var mediaService = ApplicationContext.Current.Services.MediaService;
