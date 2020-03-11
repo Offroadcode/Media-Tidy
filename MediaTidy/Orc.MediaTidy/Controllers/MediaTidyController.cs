@@ -8,7 +8,13 @@ namespace Orc.MediaTidy.Controllers
 {
     public class MediaTidyController : UmbracoApiController
     {
-        private readonly MediaAuditService _mediaAuditService = new MediaAuditService();
+        private readonly AuditService _auditService = new AuditService();
+        private readonly ArchiveService _archiveService = new ArchiveService();
+
+        public IHttpActionResult GenerateMediaReport()
+        {
+            return Ok();
+        }
 
         /// <summary>
         /// 
@@ -17,8 +23,8 @@ namespace Orc.MediaTidy.Controllers
         [HttpGet]
         public IHttpActionResult GetUsedMedia()
         {
-            var relations = _mediaAuditService.GetUsedMediaRelations();
-            var usedMedia = _mediaAuditService.GetMediaAuditByRelations(relations);
+            var relations = _auditService.GetUsedMediaRelations();
+            var usedMedia = _auditService.GetMediaAuditByRelations(relations);
 
             return Json(new
             {
@@ -35,8 +41,8 @@ namespace Orc.MediaTidy.Controllers
         [HttpGet]
         public IHttpActionResult GetUnusedMedia()
         {
-            var ids = _mediaAuditService.GetUnusedMediaIds();
-            var unusedMedia = _mediaAuditService.GetMediaAuditByIds(ids);
+            var ids = _auditService.GetUnusedMediaIds();
+            var unusedMedia = _auditService.GetMediaAuditByIds(ids);
 
             return Json(new
             {
@@ -53,12 +59,12 @@ namespace Orc.MediaTidy.Controllers
         [HttpGet]
         public IHttpActionResult DeleteAllUnusedMedia(string type = null)
         {
-            var items = _mediaAuditService.GetAllUnusedMediaOfType(type);
+            var items = _auditService.GetAllUnusedMediaOfType(type);
 
             return Json(new
             {
                 status = HttpStatusCode.OK,
-                data = _mediaAuditService.TryDoDelete(items)
+                data = _archiveService.TryDoDelete(items)
             }, Constants.JsonSettings.Settings);
         }
 
@@ -68,7 +74,7 @@ namespace Orc.MediaTidy.Controllers
             return Json(new
             {
                 status = HttpStatusCode.OK,
-                data = _mediaAuditService.TryDoDelete(ids)
+                data = _archiveService.TryDoDelete(ids)
             }, Constants.JsonSettings.Settings);
         }
     }
