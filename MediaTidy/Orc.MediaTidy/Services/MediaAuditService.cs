@@ -56,16 +56,15 @@ namespace Orc.MediaTidy.Services
 
         internal IList<int> GetUsedPagesByMediaItemId(Dictionary<int, List<MediaRelation>> mediaRelations, int id)
         {
-            var usedPageIds = new List<int>();
             var relations = mediaRelations[id];
 
             if(relations != null)
             {
                 var ids = relations.Select(x => x.ParentId);
-                usedPageIds.AddRange(ids.Where(x => x != id).Distinct());
+                return ids.Where(x => x != id).Distinct().ToList();
             }
 
-            return usedPageIds;
+            return null;
         }
 
         internal IList<MediaAuditItem> GetMediaAuditByIds(IEnumerable<int> ids)
