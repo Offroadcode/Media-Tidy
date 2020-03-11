@@ -41,11 +41,27 @@ namespace Orc.MediaTidy.Constants
 
     internal class SqlQueries
     {
+        internal const string ImgMediaQuery =
+            @"SELECT nodeId from cmsMedia
+                WHERE cmsMedia.nodeId in (select distinct parentId from umbracoRelation where parentId is not null)
+                AND cmsMedia.nodeId in (select distinct childId from umbracoRelation where childId is not null)
+                AND (cmsMedia.mediaPath like '%.png' OR cmsMedia.mediaPath like '%.jpg')";
+
         internal const string UnusedImgMediaQuery =
             @"SELECT nodeId from cmsMedia
                 WHERE cmsMedia.nodeId not in (select distinct parentId from umbracoRelation where parentId is not null)
                 AND cmsMedia.nodeId not in (select distinct childId from umbracoRelation where childId is not null)
                 AND (cmsMedia.mediaPath like '%.png' OR cmsMedia.mediaPath like '%.jpg')";
+
+        internal const string DocsMediaQuery =
+            @"SELECT nodeId from cmsMedia
+                WHERE cmsMedia.nodeId in (select distinct parentId from umbracoRelation where parentId is not null)
+                AND cmsMedia.nodeId in (select distinct childId from umbracoRelation where childId is not null)
+                AND (
+                    cmsMedia.mediaPath not like '%.png' 
+                    AND cmsMedia.mediaPath not like '%.jpg'
+                    AND cmsMedia.mediaPath not like '%.css'  
+                    AND cmsMedia.mediaPath not like '%.js')";
 
         internal const string UnusedDocsMediaQuery =
             @"SELECT nodeId from cmsMedia
@@ -59,6 +75,17 @@ namespace Orc.MediaTidy.Constants
 
         // bit clunky, but should ignore non-standard stuff like css, js, svg etc
         // these are used in canvas pages, so while archiving won't break anything, should leave them alone
+
+        internal const string MediaQuery =
+            @"SELECT nodeId, mediaPath, parentId, childId
+                  FROM umbracoRelation
+                  JOIN cmsMedia ON nodeId = parentId OR nodeId = childId
+                  WHERE parentId in (SELECT distinct nodeId from cmsMedia where nodeId is not null)
+                  OR childId in (select distinct nodeId from cmsMedia where nodeId is not null)
+            AND (
+                cmsMedia.mediaPath not like '%.css'  
+                AND cmsMedia.mediaPath not like '%.js')";
+
         internal const string UnusedMediaQuery =
             @"SELECT nodeId from cmsMedia
                 WHERE cmsMedia.nodeId not in (select distinct parentId from umbracoRelation where parentId is not null)

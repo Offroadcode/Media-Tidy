@@ -1,5 +1,6 @@
 ﻿using Orc.MediaTidy.Constants;
 using Orc.MediaTidy.Models;
+using Orc.MediaTidy.Models.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,9 +29,48 @@ namespace Orc.MediaTidy.Services
             _mediaTypeService = contentTypeService ?? throw new ArgumentNullException(nameof(contentTypeService));
         }
 
-        internal IList<MediaAuditItem> GetUnusedMediaData(IEnumerable<int> ids)
+        internal IList<MediaAuditItem> GetMediaAuditByRelations(IEnumerable<MediaRelation> relations)
         {
-            var unusedMedia = new List<MediaAuditItem>();
+            var mediaAudit = new List<MediaAuditItem>();
+            var groupedRelations = relations.GroupBy(x => x.NodeId).ToDictionary(x => x.Key, x => x.ToList());
+
+            var media = _mediaService.GetByIds(groupedRelations.Select(x => x.Key));
+
+            if(media != null)
+            {
+                foreach (var item in media)
+                {
+                    var url = item.GetUrl("umbracoFile", null);
+                    mediaAudit.Add(new MediaAuditItem
+                    {
+                        Id = item.Id,
+                        Url = url,
+                        IsInFileSystem = IsInFileSystem(url),
+                        UsedOnPages = GetUsedPagesByMediaItemId(groupedRelations, item.Id)
+                    });
+                }
+            }
+
+            return mediaAudit;
+        }
+
+        internal IList<int> GetUsedPagesByMediaItemId(Dictionary<int, List<MediaRelation>> mediaRelations, int id)
+        {
+            var usedPageIds = new List<int>();
+            var relations = mediaRelations[id];
+
+            if(relations != null)
+            {
+                var ids = relations.Select(x => x.ParentId);
+                usedPageIds.AddRange(ids.Where(x => x != id).Distinct());
+            }
+
+            return usedPageIds;
+        }
+
+        internal IList<MediaAuditItem> GetMediaAuditByIds(IEnumerable<int> ids)
+        {
+            var mediaAudit = new List<MediaAuditItem>();
             var media = _mediaService.GetByIds(ids);
 
             if (media != null)
@@ -38,7 +78,7 @@ namespace Orc.MediaTidy.Services
                 foreach (var item in media)
                 {
                     var url = item.GetUrl("umbracoFile", null);
-                    unusedMedia.Add(new MediaAuditItem
+                    mediaAudit.Add(new MediaAuditItem
                     {
                         Id = item.Id,
                         Url = url,
@@ -48,7 +88,7 @@ namespace Orc.MediaTidy.Services
                 }
             }
 
-            return unusedMedia;
+            return mediaAudit;
         }
 
         internal bool IsInFileSystem(string path)
@@ -56,6 +96,11 @@ namespace Orc.MediaTidy.Services
             var serverPath = HttpContext.Current.Server.MapPath(path);
 
             return SystemFile.Exists(serverPath);
+        }
+
+        internal IEnumerable<MediaRelation> GetUsedMediaRelations()
+        {
+            return _dbContext.Database.Fetch<MediaRelation>(SqlQueries.MediaQuery);
         }
 
         internal IEnumerable<int> GetUnusedMediaIds()

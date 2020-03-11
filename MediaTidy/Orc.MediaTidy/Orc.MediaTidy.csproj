@@ -222,6 +222,7 @@
   <ItemGroup>
     <Compile Include="Constants\Constants.cs" />
     <Compile Include="Controllers\MediaTidyController.cs" />
+    <Compile Include="Models\Data\MediaRelation.cs" />
     <Compile Include="Models\MediaAuditItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\MediaAuditService.cs" />

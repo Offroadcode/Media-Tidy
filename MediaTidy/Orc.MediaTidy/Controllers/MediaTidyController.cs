@@ -15,10 +15,28 @@ namespace Orc.MediaTidy.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
+        public IHttpActionResult GetUsedMedia()
+        {
+            var relations = _mediaAuditService.GetUsedMediaRelations();
+            var usedMedia = _mediaAuditService.GetMediaAuditByRelations(relations);
+
+            return Json(new
+            {
+                status = HttpStatusCode.OK,
+                count = usedMedia.Count(),
+                media = usedMedia
+            }, Constants.JsonSettings.Settings);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
         public IHttpActionResult GetUnusedMedia()
         {
             var ids = _mediaAuditService.GetUnusedMediaIds();
-            var unusedMedia = _mediaAuditService.GetUnusedMediaData(ids);
+            var unusedMedia = _mediaAuditService.GetMediaAuditByIds(ids);
 
             return Json(new
             {
