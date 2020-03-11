@@ -1,9 +1,6 @@
 ﻿using Orc.MediaTidy.Constants;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Umbraco.Core;
 using Umbraco.Core.Models;
 using Umbraco.Core.Services;
@@ -26,12 +23,12 @@ namespace Orc.MediaTidy.Services
             {
                 MediaType mediaType = new MediaType(-1)
                 {
-                    AllowedAsRoot = ArchiveMediaType.AllowedAtRoot,
-                    Name = ArchiveMediaType.Name,
-                    Alias = ArchiveMediaType.Alias,
-                    Description = ArchiveMediaType.Description,
-                    IsContainer = ArchiveMediaType.IsContainer,
-                    Icon = ArchiveMediaType.Icon
+                    AllowedAsRoot = ArchiveFolderMediaType.AllowedAtRoot,
+                    Name = ArchiveFolderMediaType.Name,
+                    Alias = ArchiveFolderMediaType.Alias,
+                    Description = ArchiveFolderMediaType.Description,
+                    IsContainer = ArchiveFolderMediaType.IsContainer,
+                    Icon = ArchiveFolderMediaType.Icon
                 };
 
                 //Allowed child nodes

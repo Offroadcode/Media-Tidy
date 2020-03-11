@@ -7,16 +7,20 @@ namespace Orc.MediaTidy.Constants
 {
     public class KnownMediaTypeAliases
     {
+        public const string Folder = "Folder";
+        public const string File = "File";
         public const string Image = "Image";
         public const string ArchiveFolder = "archiveFolder";
     }
 
     public class KnownDataTypeIds
     {
+        // This is the default media list view that gets installed with Umbraco and is added to the
+        // Archive Folder media type when we create it
         public const int ListViewMedia = -96;
     }
 
-    public class ArchiveMediaType
+    public class ArchiveFolderMediaType
     {
         public const string Alias = KnownMediaTypeAliases.ArchiveFolder;
         public const string Name = "Archive Folder";
@@ -28,6 +32,8 @@ namespace Orc.MediaTidy.Constants
 
     public class KnownMediaTypeIds
     {
+        // These three constants are the default folder/image/file Ids that are set when Umbraco installs
+        // They should always remain the same unless for some reason someone has deleted and/or remade one of these media types
         public const int Folder = 1031;
         public const int Image = 1032;
         public const int File = 1033;
@@ -35,13 +41,13 @@ namespace Orc.MediaTidy.Constants
 
     internal class SqlQueries
     {
-        internal const string ImgMediaQuery =
+        internal const string UnusedImgMediaQuery =
             @"SELECT nodeId from cmsMedia
                 WHERE cmsMedia.nodeId not in (select distinct parentId from umbracoRelation where parentId is not null)
                 AND cmsMedia.nodeId not in (select distinct childId from umbracoRelation where childId is not null)
                 AND (cmsMedia.mediaPath like '%.png' OR cmsMedia.mediaPath like '%.jpg')";
 
-        internal const string DocsMediaQuery =
+        internal const string UnusedDocsMediaQuery =
             @"SELECT nodeId from cmsMedia
                 WHERE cmsMedia.nodeId not in (select distinct parentId from umbracoRelation where parentId is not null)
                 AND cmsMedia.nodeId not in (select distinct childId from umbracoRelation where childId is not null)
@@ -53,7 +59,7 @@ namespace Orc.MediaTidy.Constants
 
         // bit clunky, but should ignore non-standard stuff like css, js, svg etc
         // these are used in canvas pages, so while archiving won't break anything, should leave them alone
-        internal const string MediaQuery =
+        internal const string UnusedMediaQuery =
             @"SELECT nodeId from cmsMedia
                 WHERE cmsMedia.nodeId not in (select distinct parentId from umbracoRelation where parentId is not null)
                 AND cmsMedia.nodeId not in (select distinct childId from umbracoRelation where childId is not null)

@@ -25,7 +25,7 @@ namespace Orc.MediaTidy.Controllers
                 status = HttpStatusCode.OK,
                 count = unusedMedia.Count(),
                 media = unusedMedia
-            });
+            }, Constants.JsonSettings.Settings);
         }
 
         /// <summary>
@@ -33,25 +33,25 @@ namespace Orc.MediaTidy.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public IHttpActionResult DeleteAll(string type)
+        public IHttpActionResult DeleteAllUnusedMedia(string type = null)
         {
-            var items = _mediaAuditService.GetAllMediaOfType(type);
+            var items = _mediaAuditService.GetAllUnusedMediaOfType(type);
 
             return Json(new
             {
                 status = HttpStatusCode.OK,
                 data = _mediaAuditService.TryDoDelete(items)
-            });
+            }, Constants.JsonSettings.Settings);
         }
 
         [HttpPost]
-        public IHttpActionResult DeleteSelected(int[] ids)
+        public IHttpActionResult DeleteSelectedMedia(int[] ids)
         {
             return Json(new
             {
                 status = HttpStatusCode.OK,
                 data = _mediaAuditService.TryDoDelete(ids)
-            });
+            }, Constants.JsonSettings.Settings);
         }
     }
 }

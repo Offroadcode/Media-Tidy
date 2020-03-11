@@ -60,12 +60,12 @@ namespace Orc.MediaTidy.Services
 
         internal IEnumerable<int> GetUnusedMediaIds()
         {
-            return _dbContext.Database.Fetch<int>(SqlQueries.MediaQuery);
+            return _dbContext.Database.Fetch<int>(SqlQueries.UnusedMediaQuery);
         }
 
-        internal IEnumerable<int> GetAllMediaOfType(string type)
+        internal IEnumerable<int> GetAllUnusedMediaOfType(string type)
         {
-            return _dbContext.Database.Fetch<int>(type == "images" ? SqlQueries.ImgMediaQuery : type == "documents" ? SqlQueries.DocsMediaQuery : SqlQueries.MediaQuery);
+            return _dbContext.Database.Fetch<int>(type == "images" ? SqlQueries.UnusedImgMediaQuery : type == "documents" ? SqlQueries.UnusedDocsMediaQuery : SqlQueries.UnusedMediaQuery);
         }
 
         internal bool TryDoDelete(IEnumerable<int> ids)
@@ -142,6 +142,9 @@ namespace Orc.MediaTidy.Services
             // create root if needed
             if (root == null)
             {
+                // This checks to make sure the Archive Folder media type exists, and makes it if it doesn't
+                _mediaTypeService.AddArchivedFolderMediaType();
+
                 // Check to make sure the Archive Folder exists
                 root = _mediaService.CreateMedia("Archive", -1, KnownMediaTypeAliases.ArchiveFolder);
                 _mediaService.Save(root);
