@@ -22,7 +22,7 @@ namespace Orc.MediaTidy.Services
                 Directory.CreateDirectory(folder);
             }
 
-            var filePath = HttpContext.Current.Server.MapPath($"/App_Plugins/MediaTidy/reports/MediaReport_{DateTime.Now.ToString("dd-MM-yyyy")}.xlsx");
+            var filePath = HttpContext.Current.Server.MapPath($"/App_Plugins/MediaTidy/reports/MediaReport-{DateTime.Now.ToString("dd-MM-yyyy")}.xlsx");
 
             if (File.Exists(filePath))
             {

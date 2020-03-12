@@ -1,4 +1,5 @@
 ﻿using Orc.MediaTidy.Services;
+using System;
 using System.Linq;
 using System.Net;
 using System.Web.Http;
@@ -16,7 +17,7 @@ namespace Orc.MediaTidy.Controllers
         public IHttpActionResult GenerateMediaReport()
         {
             _reportService.GenerateMediaReport();
-            return Ok();
+            return Ok($"Successfully generated Media Report in /App_Plugins/MediaTidy/reports/MediaReport-{DateTime.Now.ToString("dd-MM-yyy")}.xlsx");
         }
 
         /// <summary>
