@@ -3,17 +3,11 @@ A package for Umbraco v7 that audits and tidies up the media section.
 
 ## Package Notes
 
-This package requires a few projects - both C# libraries and Umbraco packages - to be installed to work.
+This package requires Umbraco packages to work.
 
 ### Umbraco Packages
 
 * [Nexu](https://our.umbraco.com/packages/backoffice-extensions/nexu/)
-
-### NuGet Packages/C# Libraries
-
-* [CsvHelper v2.16.3](https://www.nuget.org/packages/CsvHelper/2.16.3)
-* [CsvHelper.Excel v1.0.6](https://www.nuget.org/packages/CsvHelper.Excel/1.0.6)
-* [ClosedXml v0.87.1](https://www.nuget.org/packages/ClosedXML/0.87.1)
 
 ## Development
 
