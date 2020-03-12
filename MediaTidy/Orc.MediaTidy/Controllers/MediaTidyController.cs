@@ -12,6 +12,7 @@ namespace Orc.MediaTidy.Controllers
         private readonly ArchiveService _archiveService = new ArchiveService();
         private readonly ReportService _reportService = new ReportService();
 
+        [HttpGet]
         public IHttpActionResult GenerateMediaReport()
         {
             _reportService.GenerateMediaReport();

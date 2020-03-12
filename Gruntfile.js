@@ -54,7 +54,10 @@ module.exports = function(grunt) {
       copy: {
           dll: {
               cwd: 'MediaTidy/Orc.MediaTidy/bin/debug/',
-              src: 'Orc.MediaTidy.dll',
+              src: [
+                'Orc.MediaTidy.dll',
+                'EPPlus.dll'
+              ],
               dest: '<%= dest %>/bin/',
               expand: true
           },

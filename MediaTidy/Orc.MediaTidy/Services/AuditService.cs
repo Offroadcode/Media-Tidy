@@ -30,8 +30,9 @@ namespace Orc.MediaTidy.Services
         {
             var mediaAudit = new List<MediaAuditItem>();
             var groupedRelations = relations.GroupBy(x => x.NodeId).ToDictionary(x => x.Key, x => x.ToList());
+            var ids = groupedRelations.Select(x => x.Key);
 
-            var media = _mediaService.GetByIds(groupedRelations.Select(x => x.Key));
+            var media = _mediaService.GetByIds(ids);
 
             if(media != null)
             {
