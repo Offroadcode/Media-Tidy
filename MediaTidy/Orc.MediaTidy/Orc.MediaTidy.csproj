@@ -240,6 +240,7 @@
     <Compile Include="Controllers\MediaTidyController.cs" />
     <Compile Include="Events\AutoMapperConfiguration.cs" />
     <Compile Include="Models\Data\MediaRelation.cs" />
+    <Compile Include="Models\Data\UmbracoRelation.cs" />
     <Compile Include="Models\MediaAuditItem.cs" />
     <Compile Include="Models\Reporting\MediaAuditRow.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

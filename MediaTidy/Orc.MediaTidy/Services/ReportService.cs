@@ -5,6 +5,7 @@ using Orc.MediaTidy.Models.Reporting;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Web;
 
 namespace Orc.MediaTidy.Services
@@ -61,7 +62,7 @@ namespace Orc.MediaTidy.Services
 
                 usedMediaRows.AddRange(Mapper.Map<List<MediaAuditRow>>(usedMedia));
 
-                ws.Cells.LoadFromCollection(usedMediaRows);
+                ws.Cells.LoadFromCollection(usedMediaRows.Where(x => x != null));
 
                 // Set the first row to bold
                 ws.Cells[1, 1, 1, 4].Style.Font.Bold = true;
@@ -89,7 +90,7 @@ namespace Orc.MediaTidy.Services
 
                 usedMediaRows.AddRange(Mapper.Map<List<MediaAuditRow>>(unusedMedia));
 
-                ws.Cells.LoadFromCollection(usedMediaRows);
+                ws.Cells.LoadFromCollection(usedMediaRows.Where(x => x != null));
 
                 // Set the first row to bold
                 ws.Cells[1, 1, 1, 4].Style.Font.Bold = true;

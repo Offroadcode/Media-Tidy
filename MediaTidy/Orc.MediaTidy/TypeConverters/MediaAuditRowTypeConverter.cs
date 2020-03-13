@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Orc.MediaTidy.Models;
 using Orc.MediaTidy.Models.Reporting;
+using Orc.MediaTidy.Services;
 using System.Collections.Generic;
 using System.Linq;
 using Umbraco.Core;
@@ -11,7 +12,8 @@ namespace Orc.MediaTidy.TypeConverters
 {
     public class MediaAuditRowTypeConverter : ITypeConverter<MediaAuditItem, MediaAuditRow>
     {
-        private readonly IContentService contentService = ApplicationContext.Current.Services.ContentService;
+        private readonly IContentService _contentService = ApplicationContext.Current.Services.ContentService;
+        private readonly ArchiveService _archiveService = new ArchiveService();
 
         public MediaAuditRow Convert(ResolutionContext context)
         {
@@ -33,7 +35,7 @@ namespace Orc.MediaTidy.TypeConverters
                         }
                         else
                         {
-                            var unpublishedPage = contentService.GetById(id);
+                            var unpublishedPage = _contentService.GetById(id);
 
                             if(unpublishedPage != null)
                             {
@@ -44,6 +46,12 @@ namespace Orc.MediaTidy.TypeConverters
                                 // TODO: Remove this particular row from the relations table? There are actually some pages that can't seem to be found but the relation exists
                                 // - I assume that means there's something that exists in the database versioning or some such, even when the pages are no longer there that Nexu
                                 // hooks into? -JC
+
+                                var pks = _archiveService.GetPrimaryKeysForParentId(id);
+
+                                _archiveService.DeleteMultipleFromRelationTable(pks);
+
+                                return null;
                             }
                         }
                     }

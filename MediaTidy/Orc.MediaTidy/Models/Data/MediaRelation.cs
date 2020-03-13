@@ -1,4 +1,6 @@
-﻿namespace Orc.MediaTidy.Models.Data
+﻿using Umbraco.Core.Persistence;
+
+namespace Orc.MediaTidy.Models.Data
 {
     public class MediaRelation
     {

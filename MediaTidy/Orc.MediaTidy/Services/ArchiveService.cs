@@ -1,9 +1,8 @@
 ﻿using Orc.MediaTidy.Constants;
+using Orc.MediaTidy.Models.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Umbraco.Core;
 using Umbraco.Core.Models;
 using Umbraco.Core.Services;
@@ -12,14 +11,17 @@ namespace Orc.MediaTidy.Services
 {
     internal class ArchiveService
     {
+        private readonly DatabaseContext _dbContext;
         private readonly IMediaService _mediaService;
         private readonly MediaTypeService _mediaTypeService;
 
         public ArchiveService()
         {
+            var dbContext = ApplicationContext.Current.DatabaseContext;
             var mediaService = ApplicationContext.Current.Services.MediaService;
             var mediaTypeService = new MediaTypeService();
 
+            _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
             _mediaService = mediaService ?? throw new ArgumentNullException(nameof(mediaService));
             _mediaTypeService = mediaTypeService ?? throw new ArgumentNullException(nameof(mediaTypeService));
         }
@@ -44,15 +46,19 @@ namespace Orc.MediaTidy.Services
                 var i = 1;
                 foreach (var mediaItem in mediaItems)
                 {
-                    var targetYear = (mediaItem.CreateDate.Year <= 2013 ? 2013 : mediaItem.CreateDate.Year).ToString();
-                    _mediaService.Move(mediaItem, (mediaItem.ContentType.Alias == KnownMediaTypeAliases.Image ? imageYears : docsYears).First(x => x.Name == targetYear).Id);
-
-                    if (i % 5 == 0)
+                    // If the media item is in the recycle bin, don't move it to the archive folder
+                    if (!mediaItem.Trashed)
                     {
-                        //hub.SendMessage($"Still going - archived {i} media items");
-                    }
+                        var targetYear = (mediaItem.CreateDate.Year <= 2013 ? 2013 : mediaItem.CreateDate.Year).ToString();
+                        _mediaService.Move(mediaItem, (mediaItem.ContentType.Alias == KnownMediaTypeAliases.Image ? imageYears : docsYears).First(x => x.Name == targetYear).Id);
 
-                    i += 1;
+                        if (i % 5 == 0)
+                        {
+                            //hub.SendMessage($"Still going - archived {i} media items");
+                        }
+
+                        i += 1;
+                    }
                 }
 
                 success = true;
@@ -140,6 +146,26 @@ namespace Orc.MediaTidy.Services
             }
 
             return root;
+        }
+
+        internal List<int> GetPrimaryKeysForParentId(int id)
+        {
+            var primaryKeys = _dbContext.Database.Fetch<int>(@"SELECT id FROM umbracoRelation WHERE parentId = @0", id);
+
+            return primaryKeys;
+        }
+
+        internal void DeleteMultipleFromRelationTable(List<int> ids)
+        {
+            foreach(var id in ids)
+            {
+                DeleteFromRelationTable(id);
+            }
+        }
+
+        internal void DeleteFromRelationTable(int id)
+        {
+            _dbContext.Database.Delete<UmbracoRelation>(id);
         }
     }
 }
