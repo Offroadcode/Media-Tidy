@@ -61,24 +61,24 @@ namespace Orc.MediaTidy.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public IHttpActionResult DeleteAllUnusedMedia(string type = null)
+        public IHttpActionResult ArchiveUnusedMedia(string type = null)
         {
-            var items = _auditService.GetAllUnusedMediaOfType(type);
+            var ids = _auditService.GetAllUnusedMediaOfType(type);
 
             return Json(new
             {
                 status = HttpStatusCode.OK,
-                data = _archiveService.TryDoDelete(items)
+                data = _archiveService.TryDoArchive(ids)
             }, Constants.JsonSettings.Settings);
         }
 
         [HttpPost]
-        public IHttpActionResult DeleteSelectedMedia(int[] ids)
+        public IHttpActionResult ArchiveSelectedMedia(int[] ids)
         {
             return Json(new
             {
                 status = HttpStatusCode.OK,
-                data = _archiveService.TryDoDelete(ids)
+                data = _archiveService.TryDoArchive(ids)
             }, Constants.JsonSettings.Settings);
         }
     }

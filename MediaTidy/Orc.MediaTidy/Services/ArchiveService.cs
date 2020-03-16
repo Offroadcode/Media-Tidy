@@ -26,7 +26,7 @@ namespace Orc.MediaTidy.Services
             _mediaTypeService = mediaTypeService ?? throw new ArgumentNullException(nameof(mediaTypeService));
         }
 
-        internal bool TryDoDelete(IEnumerable<int> ids)
+        internal bool TryDoArchive(IEnumerable<int> ids)
         {
             var success = false;
 
