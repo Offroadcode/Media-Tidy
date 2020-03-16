@@ -20,18 +20,6 @@ namespace Orc.MediaTidy.Controllers
             return Ok($"Successfully generated Media Report in /App_Plugins/MediaTidy/reports/MediaReport-{DateTime.Now.ToString("dd-MM-yyy")}.xlsx");
         }
 
-        [HttpGet]
-        public IHttpActionResult GetPrimaryKeysById(int id)
-        {
-            var ids = _archiveService.GetPrimaryKeysForParentId(id);
-
-            return Json(new { 
-                status = HttpStatusCode.OK,
-                count = ids.Count(),
-                ids = ids
-            }, Constants.JsonSettings.Settings);
-        }
-
         /// <summary>
         /// 
         /// </summary>
