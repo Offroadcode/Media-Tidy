@@ -127,7 +127,7 @@ namespace Orc.MediaTidy.Services
                 // first run will create year folders back to 2013
                 if (!folder.Children().Any())
                 {
-                    for (var i = 0; i <= 6; i += 1)
+                    for (var i = 0; i <= GeneralSettings.ArchiveYearsBack; i += 1)
                     {
                         var year = DateTime.Now.Year - i;
                         var yearFolder = _mediaService.CreateMedia(year.ToString(), folder, KnownMediaTypeAliases.ArchiveFolder);

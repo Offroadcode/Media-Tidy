@@ -42,10 +42,14 @@ namespace Orc.MediaTidy.Services
                 mediaType.AllowedContentTypes = children;
                 IDataTypeService dataTypeService = ApplicationContext.Current.Services.DataTypeService;
 
+                mediaType.AddPropertyGroup("Contents");
+
                 //Add properties
-                var name = new PropertyType(dataTypeService.GetDataTypeDefinitionById(KnownDataTypeIds.ListViewMedia), "contents");
-                name.Name = "Contents";
-                name.SortOrder = 0;
+                var contents = new PropertyType(dataTypeService.GetDataTypeDefinitionById(KnownDataTypeIds.ListViewMedia), "contents");
+                contents.Name = "Contents";
+                contents.SortOrder = 0;
+
+                mediaType.AddPropertyType(contents, "Contents");
 
                 _contentTypeService.Save(mediaType);
             }

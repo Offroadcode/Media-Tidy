@@ -24,7 +24,7 @@ namespace Orc.MediaTidy.Constants
     {
         public const string Alias = KnownMediaTypeAliases.ArchiveFolder;
         public const string Name = "Archive Folder";
-        public const string Icon = "icon-folder-closed color-blue-grey";
+        public const string Icon = "icon-folder-close color-blue-grey";
         public const string Description = "A folder to hold archived media for the purposes of testing with Nexu";
         public const bool IsContainer = false;
         public const bool AllowedAtRoot = true;
@@ -102,6 +102,12 @@ namespace Orc.MediaTidy.Constants
                 AND (
                     cmsMedia.mediaPath not like '%.css'  
                     AND cmsMedia.mediaPath not like '%.js')";
+    }
+
+    internal class GeneralSettings
+    {
+        // How many years (not including this year) back should the archive folder go?
+        public static int ArchiveYearsBack = 3;
     }
 
     internal class JsonSettings
