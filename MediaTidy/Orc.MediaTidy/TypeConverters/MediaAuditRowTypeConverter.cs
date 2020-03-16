@@ -43,9 +43,9 @@ namespace Orc.MediaTidy.TypeConverters
                             }
                             else
                             {
-                                // TODO: Remove this particular row from the relations table? There are actually some pages that can't seem to be found but the relation exists
-                                // - I assume that means there's something that exists in the database versioning or some such, even when the pages are no longer there that Nexu
-                                // hooks into? -JC
+                                // If we can't find the attached page in published or unpublished content, we remove it from the relations.
+                                // This primarily seems to happen when an item is in the recycle bin and it's looking for associations that may also be
+                                // recycled or have been deleted in the past - JC 16/03/2020
 
                                 var pks = _archiveService.GetPrimaryKeysForParentId(id);
 
