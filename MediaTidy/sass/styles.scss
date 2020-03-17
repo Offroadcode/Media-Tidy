@@ -1,0 +1,34 @@
+.orc-mediaTidy-dashboard {
+    .umb-healthcheck-group {
+        margin: 10px;
+        padding: 20px;
+        cursor: default;
+
+        .buttons {
+            text-align: center;
+        }
+
+        button {
+            display: inline-block;
+            width: auto;
+        }
+    }
+}
+
+.orc-inner-area {
+    padding: 10px;
+
+    .well {
+        margin-bottom: 0;
+    }
+
+    hr {
+        border-top: 1px solid #e0e0e5;
+        border-bottom: none;
+        margin-bottom: 0;
+    }
+
+    .controls {
+        margin-left: 0;
+    }
+}

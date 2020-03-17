@@ -26,9 +26,9 @@ namespace Orc.MediaTidy.Services
             _mediaTypeService = mediaTypeService ?? throw new ArgumentNullException(nameof(mediaTypeService));
         }
 
-        internal bool TryDoArchive(IEnumerable<int> ids)
+        internal int TryDoArchive(IEnumerable<int> ids)
         {
-            var success = false;
+            var rootId = 0;
 
             try
             {
@@ -61,16 +61,20 @@ namespace Orc.MediaTidy.Services
                     }
                 }
 
-                success = true;
+                rootId = root.Id;
             }
             catch
             {
-                return false;
+                return 0;
             }
 
-            success = CleanEmptyFolders();
+            var clean = CleanEmptyFolders();
+            if (!clean)
+            {
+                rootId = 0;
+            }
 
-            return success;
+            return rootId;
         }
 
         private bool CleanEmptyFolders()

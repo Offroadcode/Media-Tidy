@@ -7,7 +7,7 @@ using Umbraco.Web.WebApi;
 
 namespace Orc.MediaTidy.Controllers
 {
-    public class MediaTidyController : UmbracoApiController
+    public class MediaTidyController : UmbracoAuthorizedApiController
     {
         private readonly AuditService _auditService = new AuditService();
         private readonly ArchiveService _archiveService = new ArchiveService();
@@ -17,7 +17,11 @@ namespace Orc.MediaTidy.Controllers
         public IHttpActionResult GenerateMediaReport()
         {
             _reportService.GenerateMediaReport();
-            return Ok($"Successfully generated Media Report in /App_Plugins/MediaTidy/reports/MediaReport-{DateTime.Now.ToString("dd-MM-yyy")}.xlsx");
+            return Json(new
+            {
+                status = HttpStatusCode.OK,
+                data = $"/App_Plugins/MediaTidy/reports/MediaReport-{DateTime.Now.ToString("dd-MM-yyy")}.xlsx",
+            }, Constants.JsonSettings.Settings);
         }
 
         /// <summary>

@@ -1,0 +1,26 @@
+<div id="mediaTidyDashboard" class="orc-mediaTidy-dashboard" ng-controller="orc.media.tidy.controller">
+    
+    <div class="orc-inner-area">
+        <h3>Media Tidy Dashboard</h3>
+        <p>Welcome to the Media Tidy dashboard. Please remember this requires you to have the <a href="https://our.umbraco.com/packages/backoffice-extensions/nexu/">Nexu</a> package installed!</p>
+    </div>
+    
+    <div class="orc-inner-area umb-healthcheck">
+        <div class="umb-healthcheck-group">
+            <h4>Audit</h4>
+            <p>Run an audit of media on the site and download the report.</p>
+            <div class="buttons">
+                <button type="button" class="btn umb-button__button btn-success umb-button--" ng-click="onGenerateMediaReport($event)">Run Audit</button>
+                <a ng-href="{{mediaReport}}" class="btn btn-info" ng-show="mediaReport != ''">Download Generated Report</a>
+            </div>
+        </div>
+        <div class="umb-healthcheck-group">
+            <h4>Archive</h4>
+            <p>Move all unused media into an archive folder in the Media section.</p>
+            <div class="buttons">
+                <button type="button" class="btn umb-button__button btn-success umb-button--" ng-click="onArchiveUnusedMedia($event)">Archive Unused Media</button>
+                <a ng-href="/umbraco/#/media/media/edit/{{archiveFolder}}" class="btn btn-info" ng-show="archiveFolder != 0">View Archived Media</a>
+            </div>
+        </div> 
+    </div>
+</div>

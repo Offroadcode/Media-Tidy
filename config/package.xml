@@ -26,7 +26,18 @@
   <Languages />
   <DataTypes />
   <control />
-  <Actions />
+  <Actions>
+    <Action runat="install" alias="addDashboardSection" dashboardAlias="Orc.MediaTidy">
+			 <section>
+				<areas>
+				  <area>developer</area>
+				</areas>
+				<tab caption="Media Tidy">
+				  <control>/App_Plugins/MediaTidy/views/dashboard.html</control>
+				</tab>
+			 </section>
+		 </Action>
+  </Actions>
   <files>
   	<% files.forEach(function(file) { %>
   	<file>

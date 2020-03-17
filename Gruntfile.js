@@ -45,9 +45,10 @@ module.exports = function(grunt) {
           stripBanners: false
         },
         dist: {
-          // src: [
-          // ],
-          // dest: '<%= basePath %>/js/mediaTidy.js'
+          src: [
+            'MediaTidy/controllers/orc.media.tidy.controller.js'
+          ],
+          dest: '<%= basePath %>/js/mediaTidy.js'
         }
       },
   
@@ -64,6 +65,7 @@ module.exports = function(grunt) {
           html: {
               cwd: 'MediaTidy/views/',
               src: [
+                'dashboard.html'
               ],
               dest: '<%= basePath %>/views/',
               expand: true,
@@ -84,6 +86,7 @@ module.exports = function(grunt) {
           css: {
               cwd: 'MediaTidy/css/',
               src: [
+                'styles.css'
               ],
               dest: '<%= basePath %>/css/',
               expand: true,
@@ -91,17 +94,17 @@ module.exports = function(grunt) {
                   return dest + src;
               }
           },
-          // manifest: {
-              // cwd: 'MediaTidy/',
-              // src: [
-                  // 'package.manifest'
-              // ],
-              // dest: '<%= basePath %>/',
-              // expand: true,
-              // rename: function(dest, src) {
-                  // return dest + src;
-              // }
-          // },
+          manifest: {
+              cwd: 'MediaTidy/',
+              src: [
+                  'package.manifest'
+              ],
+              dest: '<%= basePath %>/',
+              expand: true,
+              rename: function(dest, src) {
+                  return dest + src;
+              }
+          },
          umbraco: {
           cwd: '<%= dest %>',
           src: '**/*',
@@ -143,7 +146,7 @@ module.exports = function(grunt) {
                   style: 'compressed'
               },
               files: {
-                  'MediaTidy/css/mediaTidy.css': 'MediaTidy/sass/style.scss'
+                  'MediaTidy/css/styles.css': 'MediaTidy/sass/styles.scss'
               }
           }
       },
@@ -152,19 +155,23 @@ module.exports = function(grunt) {
         build: '<%= grunt.config("basePath").substring(0, 4) == "dist" ? "dist/**/*" : "null" %>',
         tmp: ['tmp'],
         html: [
-          'MediaTidy/views/*.html'
+          'MediaTidy/views/*.html',
+          '!MediaTidy/views/dashboard.html'
           ],
         js: [
           'MediaTidy/controllers/*.js',
           'MediaTidy/models/*.js',
           'MediaTidy/directives/*.js',
-          'MediaTidy/libs/*.js'
+          'MediaTidy/libs/*.js',
+          '!MediaTidy/controllers/orc.media.tidy.controller.js'
         ],
         css: [
-          'MediaTidy/css/*.css'
+          'MediaTidy/css/*.css',
+          '!MediaTidy/css/styles.css'
         ],
         sass: [
-          'MediaTidy/sass/*.scss'
+          'MediaTidy/sass/*.scss',
+          '!MediaTidy/sass/styles.scss'
         ],
         cshtml: [
           'MediaTidy/PartialViews/*.cshtml'
