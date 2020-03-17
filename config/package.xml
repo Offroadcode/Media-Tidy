@@ -30,7 +30,7 @@
     <Action runat="install" alias="addDashboardSection" dashboardAlias="Orc.MediaTidy">
 			 <section>
 				<areas>
-				  <area>developer</area>
+				  <area>media</area>
 				</areas>
 				<tab caption="Media Tidy">
 				  <control>/App_Plugins/MediaTidy/views/dashboard.html</control>
