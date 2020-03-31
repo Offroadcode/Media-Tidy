@@ -107,7 +107,7 @@ namespace Orc.MediaTidy.Constants
     internal class GeneralSettings
     {
         // How many years (not including this year) back should the archive folder go?
-        public static int ArchiveYearsBack = 3;
+        public static int ArchiveYearsBack = 6;
     }
 
     internal class JsonSettings
